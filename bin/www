@@ -1,10 +1,11 @@
-#!/usr/bin/env node
+#!/usr/bin/env node //给linux看的，意思是说明用node启动
 
 /**
- * Module dependencies.
+ * Module dependencies.依赖的模块
  */
-
+//是应用
 var app = require('../app');
+//日志服务
 var debug = require('debug')('201601blog:server');
 var http = require('http');
 
@@ -86,5 +87,6 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
+  //输出一行日志显示不显示取决于变量里的DEBUG参数
   debug('Listening on ' + bind);
 }

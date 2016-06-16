@@ -11,19 +11,24 @@ var http = require('http');
 
 /**
  * Get port from environment and store in Express.
+ * 从环境变量中获得端口号并且保存在express中
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+//app也可以保存一些变量的值
 app.set('port', port);
 
 /**
  * Create HTTP server.
+ * 创建http服务器
+ * app 每当有请求到来的时候的回调函数
  */
 
 var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
+ * 在端口号上进行监听
  */
 
 server.listen(port);
@@ -80,10 +85,11 @@ function onError(error) {
 
 /**
  * Event listener for HTTP server "listening" event.
+ * 当监听成功的时候会调用此回调函数
  */
 
 function onListening() {
-  var addr = server.address();
+  var addr = server.address();//取得服务器的IP地址
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;

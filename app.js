@@ -11,14 +11,23 @@ var bodyParser = require('body-parser');
 //加载路由 根据请求的路径不同，进行不同的处理
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var articles = require('./routes/articles');
+var session =require('express-session');
 
 var app = express();
 
 // view engine setup设置模板文件的存放路径
 app.set('views', path.join(__dirname, 'views'));
 //设置模板引擎
-app.set('view engine', 'ejs');
-
+app.set('view engine', 'html');
+//设置一下对于html格式的文件，渲染的时候委托ejs的渲染方式来进行渲染
+app.engine('html',require('ejs').renderFile);
+//使用了会话中间件之后，req.session出现
+app.use(session({
+  secret: '2016blog',
+  resave: false,
+  saveUninitialized:true,
+}));
 // uncomment after placing your favicon in /public
 //需要你把收藏夹的图标文件放在public下面
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -31,10 +40,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 //静态文件服务中间件 指定静态文件根目录
 app.use(express.static(path.join(__dirname, 'public')));
+//配置模板的中间件
+app.use(function(req,res,next){
+  //res.locals才是真正的渲染模板的对象
+  res.locals.user = req,session.user;
+  next();
+})
+
 //路由配置
 app.use('/', routes);
 //这里的/才是一级路径，真正的根目录
 app.use('/users', users);
+app.use('/articles', articles);
 
 // catch 404 and forward to error handler
 //捕获404的错误并且转发到错误处理中间件里面去

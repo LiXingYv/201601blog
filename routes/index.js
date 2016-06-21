@@ -9,6 +9,7 @@ router.use(function(req,res,next){
 router.get('/', function(req, res, next) {
   //用数据渲染模板 从session中获取用户信息
   //第二个参数对象最后会合并到res.locals对象上，并渲染模板
+
   res.render('index',{});
 });
 

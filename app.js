@@ -13,7 +13,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var articles = require('./routes/articles');
 var session =require('express-session');
-
+var MongoStore = require('connect-mongo/es5')(session);
+var flash = require('connect-flash');
 var app = express();
 
 // view engine setup设置模板文件的存放路径
@@ -23,11 +24,22 @@ app.set('view engine', 'html');
 //设置一下对于html格式的文件，渲染的时候委托ejs的渲染方式来进行渲染
 app.engine('html',require('ejs').renderFile);
 //使用了会话中间件之后，req.session出现
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost:27017/201601blog');
 app.use(session({
-  secret: '2016blog',
-  resave: false,
-  saveUninitialized:true,
+    secret: '2016blog',
+    resave: false,
+    saveUninitialized:true,
+    //指定保存的位置
+    store: new MongoStore({ //设置它的 store 参数为 MongoStore 实例，把会话信息存储到数据库中，以避免重启服务器时会话丢失
+        // db: '201601blog',
+        // host: '127.0.0.1',
+        // port: 27017
+        mongooseConnection:mongoose.connection
+    })
 }));
+app.use(flash());
 // uncomment after placing your favicon in /public
 //需要你把收藏夹的图标文件放在public下面
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -43,9 +55,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 //配置模板的中间件
 app.use(function(req,res,next){
   //res.locals才是真正的渲染模板的对象
-  res.locals.user = req,session.user;
-  next();
-})
+    res.locals.user = req.session.user;
+    //flash取出来的是一个数组
+    res.locals.success = req.flash('success').toString();
+    res.locals.error = req.flash('error').toString();
+    next();
+});
 
 //路由配置
 app.use('/', routes);

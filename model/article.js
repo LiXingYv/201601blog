@@ -9,7 +9,9 @@ var articleSchema = new mongoose.Schema({
     img:String,
     user:{type:mongoose.Schema.Types.ObjectId,ref:'user'},//类型是主键类型，引用的模型是user
     //发表日期类型是Date，默认值是now，当前时间
-    createAt:{type:Date,default:Date.now}
+    createAt:{type:Date,default:Date.now},
+    //添加评论的字段
+    comments:[{user:{type:mongoose.Schema.Types.ObjectId,ref:'user'},content:String,createAt:{type:Date,default:Date.now}}]
 });
 //再定义model
 var articleModel = mongoose.model('article',articleSchema);

@@ -1,6 +1,11 @@
 <%- include ../include/header.html%>
 <form method="post" action="/articles/add" enctype="multipart/form-data">
+        <%if(article._id){
+            %>
     <input type="hidden" name="_id" value="<%=article._id%>"/>
+            <%
+            }
+        %>
     <div class="form-group">
         <label for="title">标题</label>
         <input type="text" value="<%=article.title%>" class="form-control" name="title" id="title" placeholder="标题">

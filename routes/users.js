@@ -20,7 +20,7 @@ router.get('/reg', function(req, res, next) {
 
 //用户注册  当用户通过get方法请求/users/reg的时候，执行此函数
 router.get('/reg',validate.checkNotLogin,function(req,res){
-  res.render('user/reg');
+  res.render('user/reg',{keyword:req.session.keyword});
 });
 //提交用户注册的表单
 router.post('/reg',validate.checkNotLogin,function(req,res){
@@ -45,7 +45,7 @@ router.post('/reg',validate.checkNotLogin,function(req,res){
 
 //用户登录  当用户通过get方法请求/users/reg的时候，执行此函数
 router.get('/login',validate.checkNotLogin,function(req,res){
-  res.render('user/login');
+  res.render('user/login',{keyword:req.session.keyword});
 });
 //提交用户登录的表单
 router.post('/login',validate.checkNotLogin,function(req,res){

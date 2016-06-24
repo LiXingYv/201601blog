@@ -12,7 +12,7 @@
                 </a>
             </div>
             <div class="media-body">
-                <h4 class="media-heading"><a href="articles/detail/<%=article._id%>"><%=article.title%></a></h4>
+                <h4 class="media-heading"><a href="/articles/detail/<%=article._id%>"><%=article.title%></a></h4>
                 <p><%-article.content%></p>
                 <img src="<%=article.img%>" style="width:100px;"/>
             </div>
@@ -23,5 +23,13 @@
 
     </ul>
 </div>
-
+<ul class="pagination">
+    <%
+    for(var i=1;i<=totalPage;i++){
+    %>
+    <li><a href="/articles/list/<%=i%>/<%=pageSize%>?keyword=<%=keyword%>"><%=i%></a></li>
+    <%
+    }
+    %>
+</ul>
 <%- include include/footer.html%>

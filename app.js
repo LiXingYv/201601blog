@@ -15,6 +15,7 @@ var articles = require('./routes/articles');
 var session =require('express-session');
 var MongoStore = require('connect-mongo/es5')(session);
 var flash = require('connect-flash');
+var fs = require('fs');
 var app = express();
 
 // view engine setup设置模板文件的存放路径
@@ -39,6 +40,20 @@ app.use(session({
         mongooseConnection:mongoose.connection
     })
 }));
+
+//正常日志
+var accessLog = fs.createWriteStream('access.log', {flags: 'a',encoding:null});
+app.use(logger('tiny',{stream: accessLog}));
+
+//错误日志
+var errorLog = fs.createWriteStream('error.log', {flags: 'a',encoding:'utf8'});
+app.use(function (err, req, res, next) {
+    var meta = '[' + new Date() + '] ' + req.url + '\n';
+    errorLog.write(meta + err.stack + '\n');
+    next();
+});
+
+
 app.use(flash());
 // uncomment after placing your favicon in /public
 //需要你把收藏夹的图标文件放在public下面
@@ -70,10 +85,13 @@ app.use('/articles', articles);
 
 // catch 404 and forward to error handler
 //捕获404的错误并且转发到错误处理中间件里面去
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
+});*/
+app.use(function (req,res,next) {
+    res.render('404',{keyword:''});
 });
 
 // error handlers 错误处理

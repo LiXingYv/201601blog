@@ -3,6 +3,7 @@
     <div class="panel-heading"><%=article.title%></div>
     <div class="panel-body">
         <p><%-article.content%></p>
+        <p>阅读：<%= article.pv %> 评论：<%=article.comments.length%></p>
     </div>
     <div class="panel-footer">
         <a class="btn btn-warning" href="/articles/update/<%=article._id%>">修改</a>
@@ -16,7 +17,8 @@
     <div class="panel-body"  style="height:300px;overflow-y: scroll">
         <ul class="media-list">
             <%
-            article.comments.forEach(function(comment){
+            article.comments.forEach(function(comment,index){
+
             %>
             <li class="media">
                 <div class="media-left">

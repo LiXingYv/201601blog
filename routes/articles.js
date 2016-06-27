@@ -4,6 +4,7 @@ var userModel = require('../model/user');
 var middleware = require('../middle/index');
 var markdown = require('markdown').markdown;
 var multer = require('multer');
+var async = require('async');
 //生成一个路由实例
 var router = express.Router();
 //指定文件元素的存储方式
@@ -66,23 +67,49 @@ router.post('/add',upload.single('img'),function(req,res){
 
 });
 //增加文章的详情页
-router.get('/detail/:_id',function(req,res){
-    articleModel.findById(req.params._id,function(err,article){
+/*router.get('/detail/:_id',function(req,res){
+    /!*articleModel.findById(req.params._id,function(err,article){
+        var authors = [];
+
         article.content = markdown.toHTML(article.content);
-        
-        article.comments.forEach(function(comment){
+        article.comments.forEach(function(comment,index,array){
             userModel.findById(comment.user).populate('user').exec(function(err,user){
-
-                comment.user = {};
-                comment.user = user;
-                console.log(article);
-
+                authors[index] = user;
+                if(index == array.length-1){
+                    res.render('article/detail',{article:article,keyword:req.session.keyword,auth:authors});
+                }
             });
+
         });
 
-        res.render('article/detail',{article:article,keyword:req.session.keyword});
-    });
 
+    });*!/
+    /!*articleModel.findById(req.params._id).populate('comments.user').exec(function(err,article){
+
+        article.content = markdown.toHTML(article.content);
+        console.log(article);
+        res.render('article/detail',{article:article,keyword:req.session.keyword});
+
+
+    });*!/
+
+});*/
+router.get('/detail/:_id', function (req, res) {
+    //异步方法的并行处理，async.parallel,其第一个参数是一个函数的数组，数组中的每个函数都需要传入一个回调函数，其第二个参数就是数组中每个函数传入的回调函数
+    async.parallel([function(callback){
+        articleModel.findOne({_id:req.params._id}).populate('user').populate('comments.user').exec(function(err,article){
+            article.content = markdown.toHTML(article.content);
+            callback(err,article);
+        });
+    },function(callback){
+        articleModel.update({_id:req.params._id},{$inc:{pv:1}},callback);
+    }],function(err,result){
+        if(err){
+            req.flash('error',err);
+            return res.redirect('back');
+        }
+        res.render('article/detail',{title:'查看文章',article:result[0],keyword:req.session.keyword});
+    });
 });
 //删除文章
 router.get('/delete/:_id',function(req,res){

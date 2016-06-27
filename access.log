@@ -1,0 +1,23 @@
+[0mGET / [36m302 [0m8.733 ms - 80[0m
+[0mGET /articles/list/1/2 [36m304 [0m38.658 ms - -[0m
+[0mGET /articles/list/public/lib/css/bootstrap.css [36m304 [0m8.895 ms - -[0m
+[0mGET /lib/css/bootstrap.css [36m304 [0m14.170 ms - -[0m
+[0mGET / [36m302 [0m10.082 ms - 80[0m
+[0mGET /articles/list/1/2 [36m304 [0m31.684 ms - -[0m
+[0mGET /lib/css/bootstrap.css [36m304 [0m9.013 ms - -[0m
+[0mGET /articles/list/public/lib/css/bootstrap.css [36m304 [0m7.493 ms - -[0m
+[0mGET /articles/detail/576cbdd2cf04bae0198adb65 [32m200 [0m24.142 ms - 3271[0m
+[0mGET /articles/public/lib/css/bootstrap.css [36m304 [0m3.309 ms - -[0m
+[0mGET /lib/css/bootstrap.css [36m304 [0m6.900 ms - -[0m
+::1 - - [27/Jun/2016:07:35:47 +0000] "GET / HTTP/1.1" 302 80
+::1 - - [27/Jun/2016:07:35:47 +0000] "GET /articles/list/1/2 HTTP/1.1" 304 -
+::1 - - [27/Jun/2016:07:35:47 +0000] "GET /lib/css/bootstrap.css HTTP/1.1" 304 -
+::1 - - [27/Jun/2016:07:35:47 +0000] "GET /articles/list/public/lib/css/bootstrap.css HTTP/1.1" 304 -
+[0mGET /articles/list/4/2?keyword= [36m304 [0m36.208 ms - -[0m
+[0mGET /lib/css/bootstrap.css [36m304 [0m8.708 ms - -[0m
+[0mGET /articles/list/public/lib/css/bootstrap.css [36m304 [0m5.824 ms - -[0m
+[0mGET /images/1466645974611.jpeg [36m304 [0m9.139 ms - -[0m
+GET / 302 80 - 8.725 ms
+GET /articles/list/1/2 304 - - 30.335 ms
+GET /lib/css/bootstrap.css 304 - - 8.506 ms
+GET /articles/list/public/lib/css/bootstrap.css 304 - - 6.739 ms
